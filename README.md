@@ -5,3 +5,6 @@ This repository contains a working TODO app. However, the app is supported in th
 - [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API?retiredLocale=nl)
 
 When running this site, you can switch between the different providers using the navbar buttons.
+
+## Demo
+Check out the running [demo](https://paulrill00.github.io/browser-storage-providers/).
