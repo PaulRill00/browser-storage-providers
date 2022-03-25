@@ -34,7 +34,8 @@ class TaskManager {
   }
 
   async onInputKeyPressed(event) {
-    if (event.code === 'Enter') {
+    // Enter / Submit
+    if (event.keyCode === 13) { 
       await this.addTodo(this.todoinput.value);
       this.todoinput.value = '';
     }
