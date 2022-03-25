@@ -21,6 +21,8 @@
 <body>
   
   <script>
+    window.sessionStorage.setItem('storageprovider', window.sessionStorage.getItem('storageprovider') || 'localstorage');
+
     document.addEventListener("DOMContentLoaded", async function () {
       
       // Init all storage providers
@@ -33,7 +35,7 @@
         indexeddb: indexedDbManager
       };
 
-      const activeItem = window.sessionStorage.getItem('storageprovider') || 'localstorage';
+      const activeItem = window.sessionStorage.getItem('storageprovider');
 
       const taskmanager = new TaskManager(
         storageProviders[activeItem]
