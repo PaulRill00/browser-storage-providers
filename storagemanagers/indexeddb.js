@@ -12,23 +12,23 @@ class IndexedDbManager extends DataManager {
       const dbVersion = 1;
       this.connection = indexedDb.open(this.dbName, dbVersion);
       
-      // Create the table
+      // Create the table if the version is outdated
       this.connection.onupgradeneeded = () => {
         const db = this.connection.result;
         const store = db.createObjectStore(this.storeName, { keyPath: 'id' });
-        const index = store.createIndex('ID', ['id'])
+        
+        store.createIndex('ID', ['id'])
       }
       
-      this.connection.onsuccess = () => {
-        resolve();
-      }
+      // Resolve the promise after the connection has been established.
+      this.connection.onsuccess = resolve;
     });
   }
   
   async addItem(task) {
     const store = this.getStore();
 
-    const request = store.add({...task});
+    const request = store.add(task);
   
     return new Promise((resolve, reject) => {
       request.onsuccess = resolve;
@@ -51,6 +51,7 @@ class IndexedDbManager extends DataManager {
     const store = this.getStore();
     const index = store.index('ID');
 
+    // Get the last item from the store.
     const request = index.openCursor(null, 'prev');
 
     return new Promise((resolve, reject) => {
@@ -80,7 +81,7 @@ class IndexedDbManager extends DataManager {
   async save(task) {
     const store = this.getStore();
 
-    const request = store.put({...task});
+    const request = store.put(task);
     
     return new Promise((resolve, reject) => {
       request.onsuccess = resolve;
@@ -103,12 +104,8 @@ class IndexedDbManager extends DataManager {
     return this.connection.result;
   }
 
-  getTransaction() {
-    return this.getDb().transaction(this.dbName, 'readwrite');
-  }
-
   getStore() {
-    const transaction = this.getTransaction();
+    const transaction = this.getDb().transaction(this.dbName, 'readwrite');
     return transaction.objectStore(this.storeName);
   }
 }
