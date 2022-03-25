@@ -17,7 +17,6 @@ class SessionStorageManager extends DataManager {
 
   save(todo) {
     const index = this.todos.indexOf(this.todos.find(x => x.id === todo.id));
-    console.log(index);
     this.todos[index] = todo;
     this.updateSessionStorage();
   }
